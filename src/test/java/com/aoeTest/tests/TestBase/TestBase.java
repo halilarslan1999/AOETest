@@ -6,9 +6,6 @@ import com.aoeTest.utilities.WebDriverFactory;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,11 +14,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
-
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class TestBase {
@@ -64,17 +57,17 @@ public class TestBase {
 
     @BeforeMethod
     public void setup() {
-        driver = WebDriverFactory.getDriver("chrome");
+        driver = WebDriverFactory.getDriver(ConfigurationReader.get("browser"));
+        browserUtils=new BrowserUtils(driver);
         driver.get(ConfigurationReader.get("url"));
         //actions = new Actions(driver);
         //BrowserUtils'e driver'in gitmesi lazim
-        browserUtils=new BrowserUtils(driver);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
 
     }
 
-    // ITestResult class describes the resslt of a test in TestNG
+    // ITestResult class describes the result of a test in TestNG
     @AfterMethod
     public void tearDown(ITestResult result) throws InterruptedException, IOException {
         // If test fails
